@@ -19,14 +19,23 @@ jobs:
       - name: Setup Terraform
         uses: jdx/mise-action@v3.2.0
 
+      - name: Add Cilium Helm repo
+        run: helm repo add cilium https://helm.cilium.io/
+
+      - name: Create template
+        run: |
+          helm template \
+            cilium \
+            cilium/cilium \
+            --values kubernetes/values/cilium/values.yaml \
+            --namespace kube-system > kubernetes/templates/cilium.yaml
+
       - name: Init Terraform
-        run: terraform init
-        working-directory: ./terraform
+        run: cd ./terraform && terraform init
 
       - name: Check Terraform format
-        run: terraform fmt -check -recursive
-        working-directory: ./terraform
+        run: cd ./terraform && terraform fmt -check -recursive
 
       - name: Validate Terraform
-        run: terraform validate -no-color
+        run: cd ./terraform && terraform validate -no-color
         working-directory: ./terraform

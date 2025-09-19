@@ -1,2 +1,4 @@
 [tools]
+helm = "3.19.0"
+kubectl = "1.34.1"
 terraform = "1.13.3"
