@@ -21,9 +21,12 @@ jobs:
 
       - name: Init Terraform
         run: terraform init
+        working-directory: ./terraform
 
       - name: Check Terraform format
         run: terraform fmt -check -recursive
+        working-directory: ./terraform
 
       - name: Validate Terraform
         run: terraform validate -no-color
+        working-directory: ./terraform
