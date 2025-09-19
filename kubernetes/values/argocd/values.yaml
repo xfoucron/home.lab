@@ -1,0 +1,13 @@
+global:
+  domain: argo.home.lab
+
+configs:
+  params:
+    server.insecure: true
+
+server:
+  service:
+    type: LoadBalancer
+  ingress:
+    enabled: true
+    ingressClassName: cilium
