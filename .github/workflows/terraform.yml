@@ -38,4 +38,3 @@ jobs:
 
       - name: Validate Terraform
         run: cd ./terraform && terraform validate -no-color
-        working-directory: ./terraform
