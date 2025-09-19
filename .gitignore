@@ -1,0 +1,5 @@
+**/.terraform/**
+*.tfstate*
+
+kubernetes/templates/*
+!kubernetes/templates/.gitkeep
