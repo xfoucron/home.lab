@@ -1,0 +1,40 @@
+name: Terraform
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  terraform:
+    name: "Validate Terraform"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Terraform
+        uses: jdx/mise-action@v3.2.0
+
+      - name: Add Cilium Helm repo
+        run: helm repo add cilium https://helm.cilium.io/
+
+      - name: Create template
+        run: |
+          helm template \
+            cilium \
+            cilium/cilium \
+            --values kubernetes/values/cilium/values.yaml \
+            --namespace kube-system > kubernetes/templates/cilium.yaml
+
+      - name: Init Terraform
+        run: cd ./terraform && terraform init
+
+      - name: Check Terraform format
+        run: cd ./terraform && terraform fmt -check -recursive
+
+      - name: Validate Terraform
+        run: cd ./terraform && terraform validate -no-color

@@ -1,0 +1,26 @@
+machine:
+  install:
+    disk: "/dev/vda"
+    image: ${talos_factory_image}
+  features:
+    hostDNS:
+      forwardKubeDNSToHost: false
+  kubelet:
+    image: ghcr.io/siderolabs/kubelet:v1.34.0
+
+cluster:
+  network:
+    cni:
+      name: none
+  proxy:
+    disabled: true
+  extraManifests:
+    - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.2.0/config/crd/standard/gateway.networking.k8s.io_gatewayclasses.yaml
+    - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.2.0/config/crd/standard/gateway.networking.k8s.io_gateways.yaml
+    - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.2.0/config/crd/standard/gateway.networking.k8s.io_httproutes.yaml
+    - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.2.0/config/crd/standard/gateway.networking.k8s.io_referencegrants.yaml
+    - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.2.0/config/crd/standard/gateway.networking.k8s.io_grpcroutes.yaml
+  inlineManifests:
+    - name: cilium
+      contents: |
+        ${indent(8, cilium_manifest)}
