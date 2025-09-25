@@ -59,6 +59,10 @@ data "talos_cluster_health" "this" {
   skip_kubernetes_checks = true
   endpoints              = data.talos_client_configuration.this.endpoints
 
+  timeouts = {
+    read = "30m"
+  }
+
   depends_on = [
     talos_machine_bootstrap.this
   ]
