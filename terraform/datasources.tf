@@ -28,6 +28,7 @@ data "talos_machine_configuration" "this" {
 
   config_patches = flatten([
     templatefile("${path.module}/templates/node.yaml.tftpl", {
+      proxmox_node        = each.value.proxmox_node_name
       cilium_manifest     = file("${path.module}/../kubernetes/templates/cilium.yaml")
       talos_factory_image = data.talos_image_factory_urls.this.urls.installer,
     }),
